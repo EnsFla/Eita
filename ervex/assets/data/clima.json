@@ -1,0 +1,65 @@
+[
+  {
+    "data": "2025-11-13",
+    "temp_min": 13,
+    "temp_max": 25,
+    "chuva_mm": 0.5,
+    "descricao": "Sol com algumas nuvens"
+  },
+  {
+    "data": "2025-11-14",
+    "temp_min": 14,
+    "temp_max": 26,
+    "chuva_mm": 2.3,
+    "descricao": "Parcialmente nublado"
+  },
+  {
+    "data": "2025-11-15",
+    "temp_min": 15,
+    "temp_max": 29,
+    "chuva_mm": 0.0,
+    "descricao": "Ensolarado"
+  },
+  {
+    "data": "2025-11-16",
+    "temp_min": 16,
+    "temp_max": 28,
+    "chuva_mm": 0.0,
+    "descricao": "Sol entre nuvens"
+  },
+  {
+    "data": "2025-11-17",
+    "temp_min": 12,
+    "temp_max": 22,
+    "chuva_mm": 12.5,
+    "descricao": "Chuva forte"
+  },
+  {
+    "data": "2025-11-18",
+    "temp_min": 8,
+    "temp_max": 20,
+    "chuva_mm": 1.0,
+    "descricao": "Aberturas de sol"
+  },
+  {
+    "data": "2025-11-19",
+    "temp_min": 4,
+    "temp_max": 19,
+    "chuva_mm": 0.0,
+    "descricao": "Ensolarado e frio"
+  },
+  {
+    "data": "2025-11-20",
+    "temp_min": 6,
+    "temp_max": 23,
+    "chuva_mm": 0.0,
+    "descricao": "Tempo firme"
+  },
+  {
+    "data": "2025-11-21",
+    "temp_min": 10,
+    "temp_max": 25,
+    "chuva_mm": 0.0,
+    "descricao": "Ensolarado"
+  }
+]
