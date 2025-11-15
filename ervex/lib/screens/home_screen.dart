@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:math'; // Para usar 'min' e 'max'
 import 'package:intl/intl.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_svg/flutter_svg.dart'; // Importa o pacote SVG
 import 'package:ervex/models/clima.dart';
 import 'package:ervex/models/boletim.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -77,14 +78,15 @@ class _HomeScreenState extends State<HomeScreen> {
     await data;
   }
 
-  (String, IconData) _getAlerta(Clima clima, Boletim boletim) {
+  // --- MUDANÇA: Agora retorna (alerta, caminho do SVG) ---
+  (String, String) _getAlerta(Clima clima, Boletim boletim) {
     if (clima.tempMin <= 5) {
-      return ("Risco de geada forte. Proteja os ervais jovens!", Icons.ac_unit);
+      return ("Risco de geada forte. Proteja os ervais jovens!", 'geada.svg');
     }
     if (clima.chuvaMm > 10) {
-      return ("Chuva intensa. Evite colheita e manejo de solo.", Icons.water_drop);
+      return ("Chuva intensa. Evite colheita e manejo de solo.", 'chuva.svg');
     }
-    return (boletim.titulo, Icons.article_outlined);
+    return (boletim.titulo, 'erva.svg'); // SVG Padrão de erva-mate
   }
 
   @override
@@ -133,7 +135,8 @@ class _HomeScreenState extends State<HomeScreen> {
             orElse: () => climaList.first,
           );
           
-          final (alerta, alertaIcone) = _getAlerta(hoje, boletimList.first);
+          // --- MUDANÇA: Agora pega (alerta, svg) ---
+          final (alertaTitulo, alertaSvg) = _getAlerta(hoje, boletimList.first);
 
           return RefreshIndicator(
             onRefresh: _refreshData,
@@ -161,10 +164,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 24),
                 
-                // 1. Card de Alerta Superior (Estilo Melhorado)
+                // 1. Card de Alerta Superior (Estilo Melhorado com SVG)
                 _AlertCard(
-                  alerta: alerta,
-                  icon: alertaIcone,
+                  alerta: alertaTitulo,
+                  svgPath: 'assets/icons/$alertaSvg', // Passa o caminho do SVG
                   onTap: () => context.go('/boletins'),
                 ),
                 const SizedBox(height: 24),
@@ -185,8 +188,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    // --- CORREÇÃO: Diminuir o espaço entre colunas ---
-                    const SizedBox(width: 12), // Era 16
+                    
+                    const SizedBox(width: 12),
 
                     // --- COLUNA DA DIREITA (GUIA DE CULTIVO) ---
                     Expanded(
@@ -215,7 +218,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-// --- WIDGETS ---
+// --- WIDGETS (Os outros não mudaram, apenas o _AlertCard) ---
 
 // Cabeçalho de Seção
 class _SectionHeader extends StatelessWidget {
@@ -223,7 +226,7 @@ class _SectionHeader extends StatelessWidget {
   const _SectionHeader({required this.title});
 
   @override
-  Widget build(BuildContext context) { // <-- CORREÇÃO: BuildContextContext -> BuildContext
+  Widget build(BuildContext context) {
     return Text(
       title,
       style: Theme.of(context).textTheme.titleLarge?.copyWith(
@@ -240,30 +243,23 @@ class _FeaturedContentList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Como estamos dentro de um ListView > Row > Column,
-    // não podemos usar outro ListView.builder.
-    // Usar Column para uma lista pequena (4-5 itens) é aceitável.
-    
-    // --- CORREÇÃO: Limitar a 2 notícias e adicionar botão "Ler Mais" ---
     final int maxItems = 2;
     final itemsToShow = boletimList.take(maxItems).toList();
 
     return Column(
       children: [
-        ...itemsToShow // Spread operator para a lista limitada
+        ...itemsToShow
             .map((boletim) => Padding(
-                  // --- CORREÇÃO: Diminuir espaço vertical entre notícias ---
-                  padding: const EdgeInsets.only(bottom: 12.0), // Era 16
+                  padding: const EdgeInsets.only(bottom: 12.0),
                   child: _FeaturedContentCard(boletim: boletim),
                 ))
             .toList(),
         
-        // Adiciona o botão se houver mais boletins do que o máximo
         if (boletimList.length > maxItems)
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: TextButton(
-              onPressed: () => context.go('/boletins'), // Navega para a tela News
+              onPressed: () => context.go('/boletins'),
               child: const Text('Ler mais notícias...'),
             ),
           )
@@ -288,8 +284,7 @@ class _FeaturedContentCard extends StatelessWidget {
         onTap: () => context.go('/boletins'),
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          // --- CORREÇÃO: Diminuir padding interno do card ---
-          padding: const EdgeInsets.all(12.0), // Era 16
+          padding: const EdgeInsets.all(12.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -303,23 +298,20 @@ class _FeaturedContentCard extends StatelessWidget {
                 side: BorderSide.none,
                 padding: const EdgeInsets.symmetric(horizontal: 4),
               ),
-              // --- CORREÇÃO: Diminuir espaço interno ---
-              const SizedBox(height: 4), // Era 8
+              const SizedBox(height: 4),
               Text(
                 boletim.titulo,
                 style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              // --- CORREÇÃO: Diminuir espaço interno ---
-              const SizedBox(height: 2), // Era 4
+              const SizedBox(height: 2),
               Text(
                 boletim.resumo,
                 style: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurface.withOpacity(0.7),
                 ),
-                // --- CORREÇÃO: Diminuir tamanho vertical (menos linhas) ---
-                maxLines: 2, // Era 3
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
             ],
@@ -374,7 +366,7 @@ class _WeatherSummaryCard extends StatelessWidget {
   }
 }
 
-// NOVO WIDGET: Card "Guia Rápido" (Tipo Embrapa)
+// Card "Guia Rápido" (Tipo Embrapa)
 class _GuiaRapidoCard extends StatelessWidget {
   const _GuiaRapidoCard();
 
@@ -438,16 +430,14 @@ class _GuiaItem extends StatelessWidget {
         children: [
           Icon(icon, color: Theme.of(context).colorScheme.primary),
           const SizedBox(width: 12),
-          // --- CORREÇÃO: Envolver o Text em Expanded para corrigir o OVERFLOW ---
           Expanded(
             child: Text(
               title,
-              // Estilo que eu tinha apagado por engano
               style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w600
               ),
-            ), // <-- Parêntese do Text FECHADO
-          ), // <-- Parêntese do Expanded FECHADO
+            ),
+          ),
         ],
       ),
     );
@@ -455,15 +445,16 @@ class _GuiaItem extends StatelessWidget {
 }
 
 
-// Card de Alerta (Estilo Melhorado)
+// --- WIDGET ATUALIZADO ---
+// Card de Alerta (Estilo Melhorado com SVG e mais alto)
 class _AlertCard extends StatelessWidget {
   final String alerta;
-  final IconData icon;
+  final String svgPath; // Novo parâmetro para o caminho do SVG
   final VoidCallback onTap;
 
   const _AlertCard({
     required this.alerta,
-    required this.icon,
+    required this.svgPath, // Tornar obrigatório
     required this.onTap,
   });
 
@@ -472,33 +463,60 @@ class _AlertCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return Card(
-      // Fundo verde claro
       color: colorScheme.primaryContainer,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
+        child: IntrinsicHeight(
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Ícone verde escuro
-              Icon(icon, color: colorScheme.primary, size: 40),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Text(
-                  alerta,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(
-                        // Texto verde escuro (ou onPrimaryContainer)
-                        color: colorScheme.onPrimaryContainer,
-                        fontWeight: FontWeight.w600
-                      ),
+              // Imagem à esquerda (agora SVG)
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  bottomLeft: Radius.circular(12),
+                ),
+                // --- MUDANÇA: Usa SvgPicture.asset ---
+                child: SvgPicture.asset(
+                  svgPath,
+                  width: 100,
+                  fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    colorScheme.primary, // Colore o SVG com a cor primária
+                    BlendMode.srcIn,
+                  ),
+                  placeholderBuilder: (context) => Container(
+                    width: 100,
+                    color: colorScheme.surfaceVariant,
+                    child: Icon(Icons.image, color: colorScheme.onSurfaceVariant),
+                  ),
                 ),
               ),
-              Icon(Icons.arrow_forward_ios,
-                  color: colorScheme.primary, size: 16),
+              Expanded(
+                child: Padding(
+                  // --- MUDANÇA: Aumenta o padding vertical para o card ficar mais alto ---
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          alerta,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(
+                                color: colorScheme.onPrimaryContainer,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
+                      ),
+                      Icon(Icons.arrow_forward_ios,
+                          color: colorScheme.primary, size: 16),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),

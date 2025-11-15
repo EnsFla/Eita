@@ -36,3 +36,5 @@ flutter:
   # Definição dos assets de dados
   assets:
     - assets/data/
+    - assets/images/
+    - assets/icons/
