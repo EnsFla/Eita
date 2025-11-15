@@ -4,6 +4,7 @@ import 'package:ervex/screens/home_screen.dart';
 import 'package:ervex/screens/clima_screen.dart';
 import 'package:ervex/screens/boletins_screen.dart';
 import 'package:ervex/screens/perfil_screen.dart';
+import 'package:ervex/screens/learn_screen.dart'; // Importa a nova tela
 import 'package:ervex/widgets/scaffold_with_nav_bar.dart';
 
 // Chave global para o Navigator principal
@@ -13,17 +14,13 @@ final appRouter = GoRouter(
   initialLocation: '/home',
   navigatorKey: _rootNavigatorKey,
   routes: [
-    // --- CORREÇÃO: Usando a API correta do GoRouter v14 ---
-    // Isto usa o "Stateful" ShellRoute, que preserva o estado das abas
-    // (mas corrigimos o problema de atualização automática em outro lugar).
     StatefulShellRoute.indexedStack(
       builder: (context, state, navigationShell) {
-        // O 'Shell' do app (Scaffold com BottomNavBar)
         return ScaffoldWithNavBar(navigationShell: navigationShell);
       },
+      // --- ATUALIZADO PARA SEGUIR O ESBOÇO ---
       branches: [
-        // Ramo 1: Home
-        // --- CORREÇÃO: Usando a classe correta "StatefulShellBranch" ---
+        // Ramo 0: Home
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -33,17 +30,7 @@ final appRouter = GoRouter(
           ],
         ),
 
-        // Ramo 2: Clima
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/clima',
-              builder: (context, state) => const ClimaScreen(),
-            ),
-          ],
-        ),
-
-        // Ramo 3: Boletins
+        // Ramo 1: News (Tela de Boletins)
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -53,7 +40,17 @@ final appRouter = GoRouter(
           ],
         ),
 
-        // Ramo 4: Perfil
+        // Ramo 2: Learn (Nova Tela)
+        StatefulShellBranch(
+          routes: [
+            GoRoute(
+              path: '/learn',
+              builder: (context, state) => const LearnScreen(),
+            ),
+          ],
+        ),
+
+        // Ramo 3: Config (Tela de Perfil/Região)
         StatefulShellBranch(
           routes: [
             GoRoute(
@@ -65,14 +62,14 @@ final appRouter = GoRouter(
       ],
     ),
 
-    // Rotas fora do Shell (ex: tela de detalhes de um boletim)
-    // Ex:
-    // GoRoute(
-    //   path: '/boletim/:id',
-    //   builder: (context, state) {
-    //     final id = state.pathParameters['id']!;
-    //     return BoletimDetailScreen(id: id);
-    //   },
-    // ),
+    // --- IMPORTANTE: A tela de Clima agora não está no menu ---
+    // Mas ainda pode ser acessada por um link, se precisarmos.
+    // Por enquanto, vou deixá-la aqui para não quebrar o import.
+    GoRoute(
+      path: '/clima',
+      // Redireciona para a home se tentarem acessar a rota antiga
+      redirect: (context, state) => '/home',
+      // builder: (context, state) => const ClimaScreen(),
+    ),
   ],
 );

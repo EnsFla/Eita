@@ -185,7 +185,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(width: 16),
+                    // --- CORREÇÃO: Diminuir o espaço entre colunas ---
+                    const SizedBox(width: 12), // Era 16
 
                     // --- COLUNA DA DIREITA (GUIA DE CULTIVO) ---
                     Expanded(
@@ -251,7 +252,8 @@ class _FeaturedContentList extends StatelessWidget {
       children: [
         ...itemsToShow // Spread operator para a lista limitada
             .map((boletim) => Padding(
-                  padding: const EdgeInsets.only(bottom: 16.0),
+                  // --- CORREÇÃO: Diminuir espaço vertical entre notícias ---
+                  padding: const EdgeInsets.only(bottom: 12.0), // Era 16
                   child: _FeaturedContentCard(boletim: boletim),
                 ))
             .toList(),
@@ -286,7 +288,8 @@ class _FeaturedContentCard extends StatelessWidget {
         onTap: () => context.go('/boletins'),
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          // --- CORREÇÃO: Diminuir padding interno do card ---
+          padding: const EdgeInsets.all(12.0), // Era 16
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -300,20 +303,23 @@ class _FeaturedContentCard extends StatelessWidget {
                 side: BorderSide.none,
                 padding: const EdgeInsets.symmetric(horizontal: 4),
               ),
-              const SizedBox(height: 8),
+              // --- CORREÇÃO: Diminuir espaço interno ---
+              const SizedBox(height: 4), // Era 8
               Text(
                 boletim.titulo,
                 style: textTheme.titleMedium?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 4),
+              // --- CORREÇÃO: Diminuir espaço interno ---
+              const SizedBox(height: 2), // Era 4
               Text(
                 boletim.resumo,
                 style: textTheme.bodyMedium?.copyWith(
                   color: colorScheme.onSurface.withOpacity(0.7),
                 ),
-                maxLines: 3,
+                // --- CORREÇÃO: Diminuir tamanho vertical (menos linhas) ---
+                maxLines: 2, // Era 3
                 overflow: TextOverflow.ellipsis,
               ),
             ],

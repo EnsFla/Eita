@@ -25,26 +25,27 @@ class ScaffoldWithNavBar extends StatelessWidget {
             initialLocation: index == navigationShell.currentIndex,
           );
         },
+        // --- ATUALIZADO PARA SEGUIR O ESBOÇO ---
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home),
-            label: 'Painel',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.wb_sunny_outlined),
-            selectedIcon: Icon(Icons.wb_sunny),
-            label: 'Clima',
+            label: 'Home',
           ),
           NavigationDestination(
             icon: Icon(Icons.article_outlined),
             selectedIcon: Icon(Icons.article),
-            label: 'Boletins',
+            label: 'News',
           ),
           NavigationDestination(
-            icon: Icon(Icons.place_outlined),
-            selectedIcon: Icon(Icons.place),
-            label: 'Região',
+            icon: Icon(Icons.book_outlined),
+            selectedIcon: Icon(Icons.book),
+            label: 'Learn',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings_outlined),
+            selectedIcon: Icon(Icons.settings),
+            label: 'Config',
           ),
         ],
       ),
