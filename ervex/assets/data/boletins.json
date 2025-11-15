@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "titulo": "Boletim de Safra: Início da Colheita",
+    "resumo": "A previsão de umidade moderada para o final da semana indica condições ideais para o início da colheita nas regiões mais altas.",
+    "data": "2025-11-13",
+    "categoria": "Manejo"
+  },
+  {
+    "id": "2",
+    "titulo": "Cuidados com a Secagem Pós-Chuva",
+    "resumo": "Após as chuvas de terça-feira, evite o excesso de calor direto sobre a erva fresca para não queimar as folhas. Prefira secagem lenta.",
+    "data": "2025-11-11",
+    "categoria": "Indústria"
+  },
+  {
+    "id": "3",
+    "titulo": "Alerta de Praga: Pulgão",
+    "resumo": "Identificamos focos de pulgão em ervais jovens de Irati. Monitore sua plantação e considere o controle biológico.",
+    "data": "2025-11-10",
+    "categoria": "Pragas"
+  },
+  {
+    "id": "4",
+    "titulo": "Oportunidade: Renovação de Erval",
+    "resumo": "O tempo seco previsto para a próxima semana é ideal para o preparo do solo e plantio de novas mudas.",
+    "data": "2025-11-09",
+    "categoria": "Manejo"
+  }
+]

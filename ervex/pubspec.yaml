@@ -1,0 +1,38 @@
+name: ervex
+description: Aplicativo demo para o setor de erva-mate.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Navegação
+  go_router: ^14.2.1
+  
+  # UI & Fontes
+  google_fonts: ^6.2.1
+  
+  # Formatação de datas
+  intl: ^0.19.0
+  
+  # Para ícones SVG
+  flutter_svg: ^2.0.10+1
+  
+  # Para salvar a região
+  shared_preferences: ^2.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  # Definição dos assets de dados
+  assets:
+    - assets/data/
